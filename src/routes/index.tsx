@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,45 +22,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-
-function useCountdown() {
-  const [value, setValue] = useState(60);
-  const [done, setDone] = useState(false);
-  const started = useRef(false);
-
-  useEffect(() => {
-    if (started.current) return;
-    started.current = true;
-
-    const reduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reduced) {
-      setValue(0);
-      setDone(true);
-      return;
-    }
-
-    const duration = 2000;
-    const start = performance.now();
-    let frame = 0;
-
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1);
-      setValue(Math.round(60 - 60 * progress));
-      if (progress < 1) {
-        frame = requestAnimationFrame(tick);
-      } else {
-        setDone(true);
-      }
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
-  return { value, done };
-}
 
 function LeadForm({ id }: { id: string }) {
   const [sent, setSent] = useState(false);
@@ -145,32 +106,6 @@ function LeadForm({ id }: { id: string }) {
 }
 
 function Index() {
-  const { value, done } = useCountdown();
-
-  const objections = [
-    {
-      q: "Is this actually free?",
-      a: "Yes. No card, no contract. We do this for free while we build out the full system, and you get real value from day one either way.",
-    },
-    {
-      q: "Does this replace my team?",
-      a: "No. It just makes sure every lead gets a fast, real reply the moment they come in. Your team still handles the estimate and the job.",
-    },
-    {
-      q: "How much work is this for me?",
-      a: "None. We connect it to your lead form by hand. You just tell us where your leads come from and we handle the rest.",
-    },
-  ];
-
-  const steps = [
-    {
-      title: "Tell us where leads come in.",
-      body: "Your website form, a Facebook lead ad, or both.",
-    },
-    { title: "We connect the reply.", body: "Free, no contract, nothing for you to build." },
-    { title: "Your next lead gets answered.", body: "In seconds. You'll see it happen live." },
-  ];
-
   return (
     <div className="min-h-screen bg-background">
       <header className="py-6 text-center">
@@ -180,88 +115,63 @@ function Index() {
       </header>
 
       <main className="mx-auto w-full max-w-3xl px-5 pb-4">
-        <section className="pt-12 pb-14 text-center sm:pt-20 sm:pb-20">
-          <h1 className="mx-auto max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
-            Every new lead gets a reply <span className="text-gradient">in 60 seconds.</span>
+        <section className="pt-10 pb-14 text-center sm:pt-16 sm:pb-16">
+          <p className="text-sm font-semibold text-gradient">FOR REMODELING & CONTRACTING COMPANIES</p>
+          <h1 className="mx-auto mt-4 max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
+            Stop losing new leads to <span className="text-gradient">slow follow-up.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-body sm:text-lg">
-            We connect an automatic email reply to your lead form, free. Every new inquiry gets
-            answered in under 60 seconds, starting today.
+            Give every website or Facebook lead a helpful reply in 60 seconds without changing
+            how your team handles estimates.
           </p>
           <div className="mt-9">
             <a href="#claim" className="btn-gradient inline-flex h-12 rounded-lg px-7 text-base">
-              Get my free instant reply
+              Get my free 60-second reply
             </a>
-            <p className="mt-3 text-sm text-body">Takes 2 minutes. No card, no commitment.</p>
+            <p className="mt-3 text-sm text-body">We connect it to your lead form. No card or commitment.</p>
           </div>
         </section>
 
-        <section className="pb-16 sm:pb-24">
-          <p className="text-center text-xs font-medium uppercase tracking-widest text-body">
-            Live example
-          </p>
-          <h2 className="mt-3 text-center text-xl font-semibold tracking-tight text-ink">
-            A lead submits a form right now
-          </h2>
-
-          <div className="mt-6 rounded-xl border border-line p-5 sm:p-8">
-            <div className="grid items-center gap-8 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-10">
-              <div className="text-center sm:w-32">
-                <div className="text-gradient text-6xl font-semibold tabular-nums">{value}</div>
-                <p className="mt-2 text-sm text-body">seconds until reply</p>
-                <p
-                  className={`mt-2 text-sm font-medium text-success transition-opacity duration-500 ${
-                    done ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  Reply sent.
-                </p>
-              </div>
-
-              <div
-                className={`min-w-0 rounded-xl bg-surface p-4 transition-opacity duration-700 sm:p-5 ${
-                  done ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <p className="truncate text-xs text-body">
-                  Anchor Remodeling to mike@sorensen...
-                </p>
-                <p className="mt-2 text-sm font-semibold text-ink">
-                  Your kitchen remodel, 220 sq ft, hoping to start in spring
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-body">
-                  Hi Mike, thanks for the details on the kitchen. Sounds like a great project for
-                  spring. I saw you're hoping to redo the layout and add an island. Someone from our
-                  team will call you today to talk through it. Does afternoon or evening work better?
-                </p>
-                <p className="mt-4 text-xs font-medium text-success">Delivered</p>
+        <section className="pb-14 sm:pb-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-body">The outcome</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+              Turn a form fill into a real conversation.
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-body">
+              A fast, helpful email lands in their inbox while your business is still top of mind.
+            </p>
+          </div>
+          <div className="mx-auto mt-7 max-w-xl rounded-2xl border border-line bg-surface p-3 text-left shadow-sm sm:p-5">
+            <div className="flex items-center gap-3 border-b border-line px-2 pb-4">
+              <div className="grid size-8 place-items-center rounded-lg bg-accent-blue text-sm font-bold text-white">✉</div>
+              <div>
+                <p className="text-sm font-semibold text-ink">Inbox</p>
+                <p className="text-xs text-body">Anchor Remodeling</p>
               </div>
             </div>
-          </div>
-        </section>
-
-        <section className="pb-16 sm:pb-24">
-          <div className="grid gap-10 sm:grid-cols-3 sm:gap-8">
-            {steps.map((step, i) => (
-              <div key={step.title}>
-                <div className="grid h-8 w-8 place-items-center rounded-full bg-gradient text-sm font-semibold text-white">
-                  {i + 1}
+            <div className="px-2 py-4">
+              <div className="rounded-lg border border-line bg-background p-4">
+                <div className="flex items-start justify-between gap-3 text-xs">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-ink">Anchor Remodeling <span className="font-normal text-body">&lt;hello@anchorremodeling.com&gt;</span></p>
+                    <p className="mt-1 text-body">to Mike Sorensen</p>
+                  </div>
+                  <span className="shrink-0 text-success">Delivered</span>
                 </div>
-                <h3 className="mt-4 text-base font-semibold text-ink">{step.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-body">{step.body}</p>
+                <p className="mt-5 text-sm font-semibold text-ink">Re: Your kitchen remodel project</p>
+                <div className="mt-4 text-sm leading-relaxed text-body">
+                  <p>Hi Mike,</p>
+                  <p className="mt-3">Thanks for reaching out about your spring kitchen remodel. A new layout and island sound like a great fit for the space.</p>
+                  <p className="mt-3">Someone from our team will call today to talk through your project. Is afternoon or evening better?</p>
+                  <p className="mt-3">Anchor Remodeling</p>
+                </div>
               </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="pb-16 sm:pb-24">
-          <div className="divide-y divide-line border-t border-line">
-            {objections.map((o) => (
-              <div key={o.q} className="py-6">
-                <h3 className="text-base font-semibold text-ink">{o.q}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-body">{o.a}</p>
-              </div>
-            ))}
+            </div>
+            <div className="flex items-center gap-3 rounded-xl border border-success/25 bg-background px-4 py-3">
+              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[color:var(--success)] text-sm font-bold text-white">✓</span>
+              <p className="text-sm font-medium text-ink">Sent automatically, within 60 seconds of the inquiry.</p>
+            </div>
           </div>
         </section>
 
@@ -270,12 +180,16 @@ function Index() {
             Claim your free install
           </h2>
           <p className="mx-auto mt-3 mb-6 max-w-xl text-center text-sm leading-relaxed text-body">
-            We only need your email to set this up and confirm it's live. No newsletters, no other
-            outreach.
+            Tell us where your leads come from. We’ll connect the reply and confirm when your next lead is covered.
           </p>
           <div className="mx-auto max-w-lg">
             <LeadForm id="submit-lead" />
           </div>
+          <ul className="mx-auto mt-7 grid max-w-lg gap-3 text-sm leading-relaxed text-body">
+            <li><span className="mr-2 font-semibold text-success">✓</span>Free to install. No card or contract.</li>
+            <li><span className="mr-2 font-semibold text-success">✓</span>Your team still handles every estimate and job</li>
+            <li><span className="mr-2 font-semibold text-success">✓</span>Nothing to build; we connect it for you</li>
+          </ul>
         </section>
       </main>
 
