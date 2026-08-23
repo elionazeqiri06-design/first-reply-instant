@@ -147,15 +147,14 @@
   --body: oklch(0.51 0.011 265);
   --line: oklch(0.92 0.004 265);
   --surface: oklch(0.975 0.002 265);
-  --accent-blue: oklch(0.58 0.19 269);
+  --accent-blue: oklch(0.32 0.11 260);
+  --accent-blue-hover: oklch(0.37 0.12 260);
   --success: oklch(0.58 0.13 165);
-  --brand-gradient: linear-gradient(120deg, #4c6fe8 0%, #22c7a9 100%);
-  --button-deep-blue: oklch(0.32 0.11 260);
-  --button-deep-blue-hover: oklch(0.37 0.12 260);
+  --brand-gradient: var(--accent-blue);
 }
 
 @utility text-gradient {
-  background: var(--brand-gradient);
+  background: var(--accent-blue);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -163,19 +162,19 @@
 }
 
 @utility bg-gradient {
-  background: var(--brand-gradient);
+  background: var(--accent-blue);
 }
 
 @utility btn-gradient {
-  background: var(--button-deep-blue);
+  background: var(--accent-blue);
   color: #fff;
   font-weight: 600;
   align-items: center;
   justify-content: center;
   display: inline-flex;
-  transition: background 150ms ease, opacity 150ms ease;
+  transition: background 150ms ease;
   &:hover {
-    background: var(--button-deep-blue-hover);
+    background: var(--accent-blue-hover);
   }
 }
 
