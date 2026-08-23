@@ -23,16 +23,55 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const WEBHOOK_URL = "https://n8n.piplineloop.com/webhook/new-signup";
+
 function LeadForm({ id }: { id: string }) {
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <div>
       <form
         className="rounded-xl border border-line bg-surface p-5 sm:p-7"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          setSent(true);
+          setError(null);
+
+          if (isSubmitting) return;
+
+          const form = e.currentTarget;
+          const formData = new FormData(form);
+          const payload = {
+            name: String(formData.get("name") ?? "").trim(),
+            business: String(formData.get("business") ?? "").trim(),
+            email: String(formData.get("email") ?? "").trim(),
+            source: String(formData.get("source") ?? "").trim(),
+          };
+
+          setIsSubmitting(true);
+
+          try {
+            const response = await fetch(WEBHOOK_URL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+              throw new Error(`Request failed with status ${response.status}`);
+            }
+
+            form.reset();
+            setSent(true);
+          } catch {
+            setSent(false);
+            setError("Something went wrong while sending your details. Please try again.");
+          } finally {
+            setIsSubmitting(false);
+          }
         }}
       >
         <div className="grid gap-4">
@@ -81,11 +120,18 @@ function LeadForm({ id }: { id: string }) {
               <option>Something else</option>
             </select>
           </label>
-          <button type="submit" id={id} className="btn-gradient h-12 w-full rounded-lg text-base">
-            Get my free instant reply
+          <button
+            type="submit"
+            id={id}
+            disabled={isSubmitting}
+            className="btn-gradient h-12 w-full rounded-lg text-base disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            {isSubmitting ? "Sending..." : "Get my free instant reply"}
           </button>
         </div>
       </form>
+
+      {error ? <p className="mt-4 text-sm font-medium text-red-600">{error}</p> : null}
 
       {sent ? (
         <p className="mt-4 text-sm font-semibold text-success">
