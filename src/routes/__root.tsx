@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { initMetaPixel, trackMetaEvent } from "../lib/meta-pixel";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -127,6 +128,16 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    initMetaPixel();
+
+    const seen = sessionStorage.getItem("meta-pixel-pageview-seen");
+    if (!seen) {
+      sessionStorage.setItem("meta-pixel-pageview-seen", "true");
+      trackMetaEvent("PageView");
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

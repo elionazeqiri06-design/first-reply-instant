@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
+import { trackMetaCustomEvent, trackMetaEvent } from "../lib/meta-pixel";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -64,8 +66,18 @@ function LeadForm({ id }: { id: string }) {
               throw new Error(`Request failed with status ${response.status}`);
             }
 
+            trackMetaEvent("Lead", {
+              content_name: "FirstReply signup",
+              value: 1,
+              currency: "USD",
+            });
+
             form.reset();
             setSent(true);
+            sessionStorage.setItem("firstreply-activated", "true");
+            trackMetaCustomEvent("FirstReplyActivated", {
+              content_name: "FirstReply signup activated",
+            });
           } catch {
             setSent(false);
             setError("Something went wrong while sending your details. Please try again.");
