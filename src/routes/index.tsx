@@ -48,7 +48,8 @@ function LeadForm({ id }: { id: string }) {
             name: String(formData.get("name") ?? "").trim(),
             business: String(formData.get("business") ?? "").trim(),
             email: String(formData.get("email") ?? "").trim(),
-            source: String(formData.get("source") ?? "").trim(),
+            phone: String(formData.get("phone") ?? "").trim(),
+            leadVolume: String(formData.get("leadVolume") ?? "").trim(),
           };
 
           setIsSubmitting(true);
@@ -67,7 +68,7 @@ function LeadForm({ id }: { id: string }) {
             }
 
             trackMetaEvent("Lead", {
-              content_name: "FirstReply signup",
+              content_name: "Old leads revival signup",
               value: 1,
               currency: "USD",
             });
@@ -76,7 +77,7 @@ function LeadForm({ id }: { id: string }) {
             setSent(true);
             sessionStorage.setItem("firstreply-activated", "true");
             trackMetaCustomEvent("FirstReplyActivated", {
-              content_name: "FirstReply signup activated",
+              content_name: "Old leads revival signup activated",
             });
           } catch {
             setSent(false);
@@ -87,7 +88,7 @@ function LeadForm({ id }: { id: string }) {
         }}
       >
         <div className="grid gap-4">
-          <label className="grid gap-2 text-sm text-ink">
+          <label className="grid gap-2 text-sm font-bold text-ink">
             Name
             <input
               name="name"
@@ -97,7 +98,7 @@ function LeadForm({ id }: { id: string }) {
               placeholder="Mike Sorensen"
             />
           </label>
-          <label className="grid gap-2 text-sm text-ink">
+          <label className="grid gap-2 text-sm font-bold text-ink">
             Business name
             <input
               name="business"
@@ -107,7 +108,7 @@ function LeadForm({ id }: { id: string }) {
               placeholder="Anchor Remodeling"
             />
           </label>
-          <label className="grid gap-2 text-sm text-ink">
+          <label className="grid gap-2 text-sm font-bold text-ink">
             Email address
             <input
               name="email"
@@ -118,27 +119,39 @@ function LeadForm({ id }: { id: string }) {
               placeholder="mike@anchorremodeling.com"
             />
           </label>
-          <label className="grid gap-2 text-sm text-ink">
-            Where do your leads come from?
+          <label className="grid gap-2 text-sm font-bold text-ink">
+            Phone Number
+            <input
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              className="h-11 rounded-lg border border-line bg-background px-3 text-base text-ink outline-none placeholder:text-muted-foreground focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/40"
+              placeholder="(555) 123-4567"
+            />
+          </label>
+          <label className="grid gap-2 text-sm font-bold text-ink">
+            About how many leads have you generated in the last 90 days?
             <select
-              name="source"
+              name="leadVolume"
               required
-              defaultValue="Website form"
+              defaultValue=""
               className="h-11 rounded-lg border border-line bg-background px-3 text-base text-ink outline-none focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/40"
             >
-              <option>Website form</option>
-              <option>Facebook Lead Ads</option>
-              <option>Both</option>
-              <option>Something else</option>
+              <option value="" disabled>Select an option</option>
+              <option>Under 25</option>
+              <option>25–50</option>
+              <option>50–100</option>
+              <option>100+</option>
             </select>
           </label>
+
           <button
             type="submit"
             id={id}
             disabled={isSubmitting}
-            className="btn-gradient h-12 w-full rounded-lg text-base disabled:cursor-not-allowed disabled:opacity-70"
+            className="btn-gradient h-12 w-full rounded-lg text-base font-bold disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {isSubmitting ? "Sending..." : "Get my free instant reply"}
+            {isSubmitting ? "Sending..." : "REVIVE MY OLD LEADS →"}
           </button>
         </div>
       </form>
@@ -147,17 +160,16 @@ function LeadForm({ id }: { id: string }) {
 
       {sent ? (
         <p className="mt-4 text-sm font-semibold text-success">
-          Got it. Check your email, we'll reach out within 24 hours to connect this to your lead
-          form.
+          Thanks - we'll review your setup and reach out soon.
         </p>
       ) : null}
 
-      <p className="mt-5 text-sm leading-relaxed text-body">
-        What happens next: we'll email you within 24 hours to set this up on your actual lead form
-        together. No cost, no contract.
+      <p className="mt-4 text-center text-sm font-medium text-body">
+        What happens next? We'll contact you first. We won't message any of your leads until you've approved the campaign.
       </p>
-      <p className="mt-2 text-sm leading-relaxed text-body">
-        We never sell or share your information. Unsubscribe from any email anytime.
+
+      <p className="mt-3 text-center text-sm font-medium text-body">
+        No card. No setup fee. No contract.
       </p>
     </div>
   );
@@ -166,96 +178,85 @@ function LeadForm({ id }: { id: string }) {
 function Index() {
   return (
     <div className="min-h-screen bg-background">
-      <header className="py-6 text-center">
-        <span className="text-lg font-semibold tracking-tight text-ink">
-          First<span className="text-gradient">Reply</span>
-        </span>
-      </header>
-
       <main className="mx-auto w-full max-w-3xl px-5 pb-4">
         <section className="pt-10 pb-14 text-center sm:pt-16 sm:pb-16">
-          <p className="text-sm font-semibold text-gradient">FOR REMODELING & CONTRACTING COMPANIES</p>
-          <h1 className="mx-auto mt-4 max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
-            Stop losing new leads to <span className="text-gradient">slow follow-up.</span>
+          <p className="text-sm font-bold text-gradient">FOR KITCHEN & BATH REMODELERS</p>
+          <h1 className="mx-auto mt-4 max-w-3xl text-3xl font-extrabold leading-tight tracking-tight text-ink sm:text-5xl">
+            You Already Paid For These Leads.<span className="text-gradient"> Let's See Who's Still Interested.</span>
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-body sm:text-lg">
-            Give every website or Facebook lead a helpful reply in 60 seconds without changing
-            how your team handles estimates.
+          <p className="mx-auto mt-5 max-w-xl text-base font-medium leading-relaxed text-body sm:text-lg">
+            We'll re-engage your last 90 days of leads and restart the conversations - free.
           </p>
           <div className="mt-9">
-            <a href="#claim" className="btn-gradient inline-flex h-12 rounded-lg px-7 text-base">
-              Get my free 60-second reply
+            <a href="#claim" className="btn-gradient inline-flex h-12 rounded-lg px-7 text-base font-bold">
+              REVIVE MY OLD LEADS →
             </a>
-            <p className="mt-3 text-sm text-body">We connect it to your lead form. No card or commitment.</p>
+            <p className="mt-3 text-sm font-semibold text-body">Taking 7 remodeling companies this week.</p>
           </div>
         </section>
 
         <section className="pb-14 sm:pb-16">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-body">The outcome</p>
-            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-              Turn a form fill into a real conversation.
+            <p className="text-xs font-bold uppercase tracking-widest text-body">How It Works</p>
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
+              We Do The Follow-Up. You Keep The Opportunities.
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-body">
-              A fast, helpful email lands in their inbox while your business is still top of mind.
+            <p className="mx-auto mt-3 max-w-xl text-sm font-medium leading-relaxed text-body">
+              Send us your old leads. We re-engage them. Interested homeowners come back to you.
             </p>
           </div>
           <div className="mx-auto mt-7 max-w-xl rounded-2xl border border-line bg-surface p-3 text-left shadow-sm sm:p-5">
-            <div className="flex items-center gap-3 border-b border-line px-2 pb-4">
-              <div className="grid size-8 place-items-center rounded-lg bg-accent-blue text-sm font-bold text-white">✉</div>
-              <div>
-                <p className="text-sm font-semibold text-ink">Inbox</p>
-                <p className="text-xs text-body">Anchor Remodeling</p>
-              </div>
+            {/* Old Lead Card */}
+            <div className="border-b border-line pb-4 px-2">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-body">47 DAYS AGO</p>
+              <p className="mt-2 text-sm font-bold text-ink">Kitchen Remodel Inquiry</p>
+              <p className="text-xs font-semibold text-body">Mike R.</p>
             </div>
+
+            {/* Re-engagement Flow */}
             <div className="px-2 py-4">
-              <div className="rounded-lg border border-line bg-background p-4">
-                <div className="flex items-start justify-between gap-3 text-xs">
-                  <div className="min-w-0">
-                    <p className="font-semibold text-ink">Anchor Remodeling <span className="font-normal text-body">&lt;hello@anchorremodeling.com&gt;</span></p>
-                    <p className="mt-1 text-body">to Mike Sorensen</p>
-                  </div>
-                  <span className="shrink-0 text-success">Delivered</span>
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent-blue mb-3">FOLLOW-UP SENT 47 DAYS LATER</p>
+              
+              {/* Contractor message */}
+              <div className="mb-3 flex justify-end">
+                <div className="max-w-xs rounded-lg bg-accent-blue px-3 py-2">
+                  <p className="text-sm text-white">"Hey Mike, you reached out to us a while back about your kitchen remodel. Did you end up getting that project taken care of?"</p>
                 </div>
-                <p className="mt-5 text-sm font-semibold text-ink">Re: Your kitchen remodel project</p>
-                <div className="mt-4 text-sm leading-relaxed text-body">
-                  <p>Hi Mike,</p>
-                  <p className="mt-3">Thanks for reaching out about your spring kitchen remodel. A new layout and island sound like a great fit for the space.</p>
-                  <p className="mt-3">Someone from our team will call today to talk through your project. Is afternoon or evening better?</p>
-                  <p className="mt-3">Anchor Remodeling</p>
+              </div>
+
+              {/* Homeowner reply */}
+              <div className="mb-4 flex justify-start">
+                <div className="max-w-xs rounded-lg border border-line bg-white px-3 py-2">
+                  <div className="text-xs font-bold uppercase text-body mb-1">MIKE</div>
+                  <p className="text-sm font-semibold text-ink">"Not yet. We got busy and put it off. We're probably looking to get started again soon."</p>
                 </div>
               </div>
             </div>
+
+            {/* Status */}
             <div className="flex items-center gap-3 rounded-xl border border-success/25 bg-background px-4 py-3">
               <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[color:var(--success)] text-sm font-bold text-white">✓</span>
-              <p className="text-sm font-medium text-ink">Sent automatically, within 60 seconds of the inquiry.</p>
+              <p className="text-sm font-medium text-ink">Conversation restarted. Back to you.</p>
             </div>
           </div>
         </section>
 
         <section id="claim" className="pb-20 sm:pb-28">
-          <h2 className="text-center text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-            Claim your free install
+          <h2 className="text-center text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
+            Want Us To Try This With Your Old Leads?
           </h2>
-          <p className="mx-auto mt-3 mb-6 max-w-xl text-center text-sm leading-relaxed text-body">
-            Tell us where your leads come from. We’ll connect the reply and confirm when your next lead is covered.
+          <p className="mx-auto mt-3 mb-6 max-w-xl text-center text-sm font-medium leading-relaxed text-body">
+            Tell us a little about your business. We'll check whether your lead list is a good fit for the free revival.
           </p>
           <div className="mx-auto max-w-lg">
             <LeadForm id="submit-lead" />
           </div>
-          <ul className="mx-auto mt-7 grid max-w-lg gap-3 text-sm leading-relaxed text-body">
-            <li><span className="mr-2 font-semibold text-success">✓</span>Free to install. No card or contract.</li>
-            <li><span className="mr-2 font-semibold text-success">✓</span>Your team still handles every estimate and job</li>
-            <li><span className="mr-2 font-semibold text-success">✓</span>Nothing to build; we connect it for you</li>
+          <ul className="mx-auto mt-7 grid max-w-lg gap-3 text-sm font-medium leading-relaxed text-body">
+            <li><span className="mr-2 font-bold text-success">✓</span>$0 cost. No card or contract.</li>
+            <li><span className="mr-2 font-bold text-success">✓</span>You keep every conversation and appointment</li>
           </ul>
         </section>
       </main>
-
-      <footer className="border-t border-line py-7 text-center">
-        <p className="px-5 text-sm text-body">
-          FirstReply: instant lead engagement for remodeling companies
-        </p>
-      </footer>
     </div>
   );
 }
